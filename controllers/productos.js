@@ -24,6 +24,12 @@ const agregarProducto = async (req, res) => {
     const { nombre, descripcion, precio, cantidad } = req.body;
     const filesUrl = [];
 
+    if(!req.files.file.length){
+        const { tempFilePath } = req.files.file;
+        const { secure_url } = await cloudinary.uploader.upload(tempFilePath, { upload_preset: "panaderia" });
+        filesUrl.push(secure_url);
+    }
+
     for (let i = 0; i < req.files.file.length; i++) {
         const { tempFilePath } = req.files.file[i];
         const { secure_url } = await cloudinary.uploader.upload(tempFilePath, { upload_preset: "panaderia" });
